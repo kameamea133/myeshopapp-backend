@@ -10,7 +10,11 @@ app.use(express.json());
 
 app.post("/checkout", async (req, res) => {
     const items = req.body.items;
+
+     // Initialize an array to hold line items for Stripe
     let lineItems = [];
+
+    // Convert each item to the format expected by Strip
     items.forEach((item) => {
         lineItems.push(
             {
@@ -19,6 +23,8 @@ app.post("/checkout", async (req, res) => {
             }
         )
     });
+
+    // Create a checkout session with Stripe
     const session = await stripe.checkout.sessions.create({
         line_items: lineItems,
         mode: 'payment',
